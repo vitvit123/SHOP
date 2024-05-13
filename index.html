@@ -47,21 +47,37 @@
     <button onclick="takeScreenshot('card3')">Take Screenshot</button>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 <script>
 function takeScreenshot(cardId) {
     var element = document.getElementById(cardId);
-    html2canvas(element, {
-        onrendered: function(canvas) {
-            var dataURL = canvas.toDataURL('image/png');
-            var link = document.createElement('a');
-            link.href = dataURL;
-            link.download = 'screenshot.png';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-    });
+    
+    // Create a canvas with the same dimensions as the card
+    var canvas = document.createElement('canvas');
+    canvas.width = element.offsetWidth;
+    canvas.height = element.offsetHeight;
+    var context = canvas.getContext('2d');
+    
+    // Draw the content of the card onto the canvas
+    var img = new Image();
+    img.onload = function() {
+        context.drawImage(img, 0, 0, element.offsetWidth, element.offsetHeight);
+        
+        // Convert the canvas to a data URL
+        var dataURL = canvas.toDataURL('image/png');
+        
+        // Create a new anchor element with the data URL as its href attribute
+        var link = document.createElement('a');
+        link.href = dataURL;
+        link.download = 'screenshot.png';
+        
+        // Programmatically click the link to trigger the download
+        document.body.appendChild(link);
+        link.click();
+        
+        // Clean up
+        document.body.removeChild(link);
+    };
+    img.src = element.querySelector('img').src;
 }
 </script>
 </body>
