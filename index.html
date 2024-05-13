@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Take Screenshot</title>
+<style>
+.card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 20px;
+    width: 200px;
+    float: left;
+}
+
+.card img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.card button {
+    display: block;
+    margin-top: 10px;
+}
+</style>
+</head>
+<body>
+<div class="card" id="card1">
+    <img src="main-square_574c3eab-568c-4ed3-b094-e9da3b2158d4_540x.webp" alt="Image 1">
+    <h2>Card 1</h2>
+    <p>Details for card 1.</p>
+    <button onclick="takeScreenshot('card1')">Take Screenshot</button>
+</div>
+
+<div class="card" id="card2">
+    <img src="1.avif" alt="Image 2">
+    <h2>Card 2</h2>
+    <p>Details for card 2.</p>
+    <button onclick="takeScreenshot('card2')">Take Screenshot</button>
+</div>
+
+<div class="card" id="card3">
+    <img src="images.jpg" alt="Image 3">
+    <h2>Card 3</h2>
+    <p>Details for card 3.</p>
+    <button onclick="takeScreenshot('card3')">Take Screenshot</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script>
+function takeScreenshot(cardId) {
+    var element = document.getElementById(cardId);
+    html2canvas(element, {
+        onrendered: function(canvas) {
+            var dataURL = canvas.toDataURL('image/png');
+            var link = document.createElement('a');
+            link.href = dataURL;
+            link.download = 'screenshot.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    });
+}
+</script>
+</body>
+</html>
